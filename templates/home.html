@@ -1,0 +1,20 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>PDF Pages</h1>
+
+    {% for pdf_page in pdf_pages %}
+        <div>
+            <p>PDF: {{ pdf_page.pdf_storage.file.name }}</p>
+            <p>Page Number: {{ pdf_page.page_number }}</p>
+            <img src="{{ pdf_page.image.url }}" alt="Page {{ pdf_page.page_number }}">
+        </div>
+    {% endfor %}
+</body>
+</html>
