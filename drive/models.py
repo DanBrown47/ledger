@@ -40,9 +40,10 @@ class PDFPage(models.Model):
         pdf_path = self.pdf_storage.file.path
         pdf_document = fitz.open(pdf_path)
         page = pdf_document[self.page_number - 1]
-        image = page.get_pixmap()
+        zoom_x =4.0
+        zoom_y =4.0
+        mat = fitz.Matrix(zoom_x, zoom_y)
+        pix = page.get_pixmap(matrix=mat)
 
-        # Use ContentFile to wrap image bytes before saving
-        image_content = ContentFile(image.tobytes())
         image_path = f"pdf_images/{self.pdf_storage.id}_page_{self.page_number}.png"
-        self.image.save(image_path, image_content)
+        pix.save(image_path)
