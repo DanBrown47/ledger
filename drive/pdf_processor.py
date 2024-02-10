@@ -1,7 +1,10 @@
 import os
+from pathlib import Path
 import fitz
+from ledger import settings
 from .models import Image
 from django.core.files import File
+
 
 def process_pdf(file_instance):
 
@@ -17,15 +20,22 @@ def process_pdf(file_instance):
             pix = page.get_pixmap(matrix=mat)
             pil_image =pix.asPIL()
 
-            file_name =f"{os.path.basename(pdf.file.name)} ({page_num + 1})"
+            file_name = f"{os.path.basename(file_instance.file.name)}_{page_num + 1}.png"
             image_file = File(pil_image.tobytes(),name=file_name)
 
             image = Image.objects.create(
                 file=image_file,
-                pdf_fil=file_instance,
-                page_numbers=page_num + 1
+                pdf_file=file_instance,
+                page_number=page_num + 1
             )
             genrated_images.append(image)
+            image_path = os.path.join(settings.MEDIA_ROOT, 'pdf_images', file_name)
+            image.image_path = image_path
+            image.save()
+
+            # Save the File object to the specified path
+            with open(image_path, "wb") as f:
+                f.write(image_file.read())
     except Exception as e:
         print(f"Error processing PDF: {str(e)}")
     return genrated_images
