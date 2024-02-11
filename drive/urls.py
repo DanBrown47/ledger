@@ -1,14 +1,7 @@
 from django.urls import path
-from .views import home
-
-app_name = 'drive'
+from . import views
+app_name =  'drive'
 
 urlpatterns = [
-    path('', home, name='home'),
-    # Add other URL patterns as needed
+    path('process-pdf/', views.process_pdf, name='process_pdf'),
 ]
-
-'''
-urlpatterns = [
-    path('', DisplayPDF.as_view(), name='display_pdf'),
-]'''

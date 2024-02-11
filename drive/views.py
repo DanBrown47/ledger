@@ -1,19 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import PDFStorage
-from .pdf_processor import process_pdf  # Replace with your function import
+from django.views.generic import ListView
+from .pdf_processor import process_pdf  # Assuming you put the PDF processing function in a separate file
 
-def home(request):
-    if request.method == 'POST':
+    # Get all PDF objects from your model
+pdf_objects = PDFStorage.objects.all()
 
-        pdf_file = request.FILES['pdf_file']
+for pdf_object in pdf_objects:
+        # Check if images already exist (optional)
+    if not pdf_object.image_set.exists():  # Assuming 'images' is a related field
+        process_pdf(pdf_object)
 
-        # Save the PDF file
-        pdf_instance = PDFStorage.objects.create(file=pdf_file)
-
-        # Process the PDF and generate images
-        process_pdf(pdf_instance)
-
-        return redirect('pdf_list_url')  # Redirect to list of PDFs with images
-
-    else:
-        return redirect('permission_denied_url')  # Redirect to permission denied page, or handle differently

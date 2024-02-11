@@ -1,24 +1,22 @@
+<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
 <body>
-    <h1>PDF Pages</h1>
+    <h1>Welcome to the Home Page</h1>
 
-    {% for pdf_page in pdf_pages %}
-        <div>
-            <p>PDF: {{ pdf_page.pdf_storage.file.name }}</p>
-            <p>Page Number: {{ pdf_page.page_number }}</p>
+    <!-- Display information about PDF storages -->
+    <ul>
+        {% for pdf_storage in pdf_storages %}
+            <li>
+                {{ pdf_storage.file.name }} - <a href="{% url 'process_pdf' pdf_storage.id %}">Process PDF</a>
+            </li>
+        {% endfor %}
+    </ul>
 
-            <img src="{{ pdf_page.image.url }}" alt="Page {{ pdf_page.page_number }}">
-
-            {% if not pdf_page.image %}
-                <img src="/media/pdf_images/pdf_page_{{ pdf_page.page_number }}.jpg" alt="Page {{ pdf_page.page_number }}">
-            {% endif %}
-        </div>
-    {% endfor %}
+    <!-- Add any additional content or data you want to display -->
 </body>
 </html>
