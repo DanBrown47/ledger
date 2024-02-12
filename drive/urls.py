@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import DisplayPDF
+from .views import index
 
 
 urlpatterns = [
-    path('', DisplayPDF.as_view(), name='display_pdf'),
+    path('', index, name='display_pdf'),
 ]
